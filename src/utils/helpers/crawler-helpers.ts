@@ -1,23 +1,12 @@
 import puppeteer from "puppeteer";
 
-import { getWebsiteSearchUrl } from "./utils/helpers";
+import type { Product, SearchResult } from "../../interfaces";
 
-interface Product {
-    id?: string;
-    position?: number;
-    title?: string;
-    price?: string;
-    sponsored?: boolean;
-    shipping?: string;
-    image?: string;
-}
+import { getWebsiteSearchUrl } from "./url-format-helpers";
 
-interface SearchResult {
-    productsData: Product[];
-    relatedSearchesText: string[];
-}
-
-async function ebaySearchCrawl(searchText: string): Promise<SearchResult> {
+export async function ebaySearchCrawl(
+    searchText: string
+): Promise<SearchResult> {
     const browser = await puppeteer.launch({
         args: ["--no-sandbox"],
     });
@@ -80,16 +69,3 @@ async function ebaySearchCrawl(searchText: string): Promise<SearchResult> {
     await browser.close();
     return { productsData, relatedSearchesText };
 }
-
-const searchText = "running shoes";
-
-const printProductData = (product: Product) => {
-    console.log(`Product-${product?.position}:\n${JSON.stringify(product)} \n`);
-};
-
-ebaySearchCrawl(searchText)
-    .then(({ productsData, relatedSearchesText }) => {
-        productsData?.forEach((res) => printProductData(res));
-        console.log(relatedSearchesText);
-    })
-    .catch((err) => console.error(err));

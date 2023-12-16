@@ -4,7 +4,8 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "start": "tsc && node dist/main.js",
+        "start": "npm run ts-build && node dist/main.js",
+        "ts-build": "tsc",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "author": "Afek-Sakaju",

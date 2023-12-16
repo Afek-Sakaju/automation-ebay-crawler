@@ -1,4 +1,7 @@
-import { WEBSITE_BASE_URL, WEBSITE_SEARCH_PATH } from "./constants";
+import {
+    WEBSITE_BASE_URL,
+    WEBSITE_SEARCH_PATH,
+} from "../variables/url-constants";
 
 export const formatSearchString = (
     searchString: string
