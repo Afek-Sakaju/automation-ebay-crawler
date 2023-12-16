@@ -1,6 +1,6 @@
 # Automation Ebay Crawler
 
-### This crawler, built with _NodeJS_, _TypeScript_ and _Puppeteer_, is designed to fetch valuable information from eBay's Search Results Page (SERP) based on a specified search term. </br></br> The crawler supplies details on related search terms and product information from the SERP, such as ID, position, title, price, sponsorship status, shipping details, and image url.
+### This crawler, built with _NodeJS_, _TypeScript_ and _Puppeteer_, is designed to fetch valuable information from eBay's Search Results Page (SERP) based on a specified search term. <img src="./readme-resources/web-crawler.png" width=120px height=120px align="right"></br></br> The crawler supplies details on related search terms and product information from the SERP, such as ID, position, title, price, sponsorship status, shipping details, and image url.
 
 ---
 
