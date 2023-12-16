@@ -1,7 +1,23 @@
-const puppeteer = require("puppeteer");
-const { getWebsiteSearchUrl } = require("./utils/helpers");
+import puppeteer from "puppeteer";
 
-async function ebaySearchCrawl(searchText) {
+import { getWebsiteSearchUrl } from "./utils/helpers";
+
+interface Product {
+    id?: string;
+    position?: number;
+    title?: string;
+    price?: string;
+    sponsored?: boolean;
+    shipping?: string;
+    image?: string;
+}
+
+interface SearchResult {
+    productsData: Product[];
+    relatedSearchesText: string[];
+}
+
+async function ebaySearchCrawl(searchText: string): Promise<SearchResult> {
     const browser = await puppeteer.launch({
         args: ["--no-sandbox"],
     });
@@ -12,25 +28,29 @@ async function ebaySearchCrawl(searchText) {
     await page.waitForSelector(".s-item");
 
     const productsData = await page.evaluate(() => {
-        const productsResults = [];
+        const productsResults: Product[] = [];
 
         document.querySelectorAll(".s-item").forEach((product) => {
-            const id = product?.id;
-            // Exclude the first element in the list on eBay, which is not a valid product and lacks an ID
+            const id = product?.id as string;
             if (!id) return;
 
-            const title = product.querySelector(".s-item__title")?.innerText;
-            const price = product.querySelector(".s-item__price")?.innerText;
-            const sponsored = product.querySelector(".SECONDARY_INFO")
-                ? true
-                : false;
-            const shipping =
-                product.querySelector(".s-item__shipping")?.innerText;
-            const image = product.querySelector(".s-item__image img")?.src;
+            const title = (
+                product.querySelector(".s-item__title") as HTMLElement
+            )?.innerText as string;
+            const price = (
+                product.querySelector(".s-item__price") as HTMLElement
+            )?.innerText as string;
+            const sponsored = !!product.querySelector(".SECONDARY_INFO");
+            const shipping = (
+                product.querySelector(".s-item__shipping") as HTMLElement
+            )?.innerText as string;
+            const image: string | undefined = (
+                product.querySelector(".s-item__image img") as HTMLImageElement
+            )?.src;
             const dataViewId = product
                 .getAttribute("data-view")
                 ?.split("iid:")?.[1];
-            const position = dataViewId && +dataViewId;
+            const position = dataViewId ? +dataViewId : undefined;
 
             productsResults.push({
                 id,
@@ -51,8 +71,8 @@ async function ebaySearchCrawl(searchText) {
         );
 
         const relatedTags = [
-            ...relatedSearchesContainer.querySelectorAll("a"),
-        ]?.map((link) => link.textContent.trim());
+            ...(relatedSearchesContainer?.querySelectorAll("a") || []),
+        ]?.map((link) => link.textContent?.trim() || "");
 
         return relatedTags || [];
     });
@@ -63,7 +83,7 @@ async function ebaySearchCrawl(searchText) {
 
 const searchText = "running shoes";
 
-const printProductData = (product) => {
+const printProductData = (product: Product) => {
     console.log(`Product-${product?.position}:\n${JSON.stringify(product)} \n`);
 };
 
