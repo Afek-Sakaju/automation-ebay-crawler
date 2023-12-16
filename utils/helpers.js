@@ -1,10 +1,10 @@
-import { WEBSITE_BASE_URL, WEBSITE_SEARCH_PATH } from "../variables";
+const { WEBSITE_BASE_URL, WEBSITE_SEARCH_PATH } = require("./constants");
 
-export const formatSearchString = (searchString) => {
+const formatSearchString = (searchString) => {
     return searchString?.replaceAll(" ", "+");
 };
 
-export const getWebsiteSearchUrl = (searchString) => {
+module.exports.getWebsiteSearchUrl = (searchString) => {
     const formattedSearchString = formatSearchString(searchString);
 
     return `${WEBSITE_BASE_URL}/${WEBSITE_SEARCH_PATH}/${formattedSearchString}`;
