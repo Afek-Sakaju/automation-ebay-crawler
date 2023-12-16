@@ -7,6 +7,8 @@ import { getWebsiteSearchUrl } from "./url-format-helpers";
 export async function ebaySearchCrawl(
     searchText: string
 ): Promise<SearchResult> {
+    if (!searchText) throw Error("Search string can't be empty");
+
     const browser = await puppeteer.launch({
         args: ["--no-sandbox"],
     });
@@ -14,7 +16,17 @@ export async function ebaySearchCrawl(
 
     const searchUrl = getWebsiteSearchUrl(searchText);
     await page.goto(searchUrl);
-    await page.waitForSelector(".s-item");
+
+    await page.evaluate(() => {
+        const isSearchErrorAppeared: boolean =
+            !!document.querySelector(".s-error");
+
+        if (isSearchErrorAppeared) {
+            throw Error(
+                "Search went wrong, try to use another search text for the crawler"
+            );
+        }
+    });
 
     const productsData = await page.evaluate(() => {
         const productsResults: Product[] = [];
