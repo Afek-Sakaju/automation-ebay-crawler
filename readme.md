@@ -6,6 +6,8 @@
 
 ### **Get a glimpse of the Crawler in action**
 
+https://github.com/Afek-Sakaju/automation-ebay-crawler/assets/100536372/ce30247c-5303-4e9a-8552-d204e621bb8a
+
 ---
 
 **Requirements**
