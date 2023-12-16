@@ -3,7 +3,7 @@ import type { Product } from "./interfaces";
 import { ebaySearchCrawl } from "./utils";
 
 // Adjust the search text in this section to update the input for the crawler search.
-const searchText = "";
+const searchText = "running shoes";
 
 const printProductData = (product: Product) => {
     console.log(`Product-${product?.position}:\n${JSON.stringify(product)} \n`);
